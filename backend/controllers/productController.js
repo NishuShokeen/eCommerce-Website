@@ -43,7 +43,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
   const resultPerPage = 8;
   const productsCount = await Product.countDocuments();
 
-  const apiFeature = new ApiFeatures(Product.find(), req.query)
+  const apiFeature = new ApiFeatures(Product.find().clone(), req.query)
     .search()
     .filter();
 
@@ -53,7 +53,7 @@ exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
 
   apiFeature.pagination(resultPerPage);
 
-  products = await apiFeature.query;
+  products = await apiFeature.query.clone();
 
   res.status(200).json({
     success: true,
